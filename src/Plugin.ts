@@ -9,7 +9,7 @@ const setup = (editor: Editor) => {
   element.setAttribute("id", config.pluginId);
 
   editor.ui.registry.addButton(config.pluginId, {
-    text: config.pluginButtonText,
+    icon: "browse",
     onAction: function () {
       var pluginContentDiv = document.getElementById(config.pluginContentDiv);
 

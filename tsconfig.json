@@ -4,10 +4,7 @@
     "target": "es5",
     "module": "es2015",
     "importHelpers": true,
-    "lib": [
-      "es2015",
-      "DOM"
-    ],
+    "lib": ["es2015", "DOM"],
     "declaration": true,
     "noUnusedLocals": true,
     "sourceMap": true,
@@ -15,11 +12,14 @@
     "baseUrl": ".",
     "skipLibCheck": true,
     "jsx": "react",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": [
     "src/*",
     "node_modules/@ephox/**/*/api/Main.d.ts",
-    "src/application/components"
-, "demo"  ]
+    "src/application/components",
+    "demo"
+  ]
 }

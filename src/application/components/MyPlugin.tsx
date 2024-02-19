@@ -5,12 +5,27 @@ import { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types/types";
 
 import Modal from "./Modal";
 import { PrimaryButton, SecondaryButton } from "./Modal/styles";
+import graphs from "../excalidrawLibs/3d-coordinate-systems-graphs.json";
+import mathTeacher from "../excalidrawLibs/math-teacher-library.json";
+import mathSymbols from "../excalidrawLibs/mathematical-symbols.json";
 
 const MyPlugin = (props: { editor: Editor }) => {
   const [modalStauts, setModalStatus] = React.useState("block");
   const [excalidrawAPI, setExcalidrawAPI] =
     React.useState<ExcalidrawImperativeAPI | null>(null);
   const { editor } = props;
+
+  React.useEffect(() => {
+    if (excalidrawAPI) {
+      excalidrawAPI.updateLibrary({
+        libraryItems: [
+          ...graphs.libraryItems,
+          ...mathTeacher.libraryItems,
+          ...mathSymbols.libraryItems,
+        ] as any,
+      });
+    }
+  }, [excalidrawAPI]);
 
   const onSubmit = () => {
     if (excalidrawAPI) {
