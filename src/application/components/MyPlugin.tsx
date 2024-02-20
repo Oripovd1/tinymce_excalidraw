@@ -1,6 +1,6 @@
 import { Editor } from "tinymce";
 import * as React from "react";
-import { Excalidraw, exportToSvg } from "@excalidraw/excalidraw";
+import { Excalidraw, exportToBlob } from "@excalidraw/excalidraw";
 import { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types/types";
 
 import Modal from "./Modal";
@@ -29,13 +29,21 @@ const MyPlugin = (props: { editor: Editor }) => {
 
   const onSubmit = () => {
     if (excalidrawAPI) {
-      exportToSvg({
+      exportToBlob({
         elements: excalidrawAPI.getSceneElements(),
         appState: excalidrawAPI.getAppState(),
         files: excalidrawAPI.getFiles(),
+        mimeType: "image/svg+xml",
       })
         .then((res) => {
-          editor.insertContent(res.outerHTML);
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const dataUrl = e.target.result;
+            const img = new Image();
+            img.src = dataUrl as string;
+            editor.insertContent(`<img src="${dataUrl}" alt="${res.name}">`);
+          };
+          reader.readAsDataURL(res);
           setModalStatus("none");
         })
         .catch((error) => console.log("error => ", error));
@@ -44,7 +52,7 @@ const MyPlugin = (props: { editor: Editor }) => {
 
   return (
     <Modal display={modalStauts}>
-      <div style={{ height: window.innerHeight / 1.36 }}>
+      <div style={{ height: window.innerHeight / 1.36, overflow: "auto" }}>
         <Excalidraw excalidrawAPI={(api: any) => setExcalidrawAPI(api)} />
       </div>
       <div
